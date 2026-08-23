@@ -931,7 +931,5 @@ def run_mcp():
     uvicorn.run(starlette_app, host='0.0.0.0', port=mcp_port, log_level='warning')
 
 if __name__ == '__main__':
-    mcp_thread = threading.Thread(target=run_mcp, daemon=True)
-    mcp_thread.start()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
