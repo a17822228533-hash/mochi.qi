@@ -140,9 +140,6 @@ def register():
         return jsonify({'ok':False,'msg':'用户名和密码不能为空'})
     
     db = get_db()
-    inv = db.execute('SELECT * FROM invites WHERE code = ?', (invite,)).fetchone()
-    if not inv or inv['used']:
-        return jsonify({'ok':False,'msg':'邀请码无效'})
     
     existing = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
     if existing:
@@ -152,7 +149,6 @@ def register():
     token = gen_token()
     db.execute('INSERT INTO users (uid, username, password, token, human_name, call_name, created) VALUES (?, ?, ?, ?, ?, ?, ?)',
                (uid, username, hash_pw(password), token, human_name, call_name, time.time()))
-    db.execute('UPDATE invites SET used = 1, used_by = ? WHERE code = ?', (uid, invite))
     db.commit()
     
     s = copy.deepcopy(DEFAULT_STATE)
