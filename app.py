@@ -820,7 +820,8 @@ def school_log_today():
                         entries.append(entry)
                 except Exception:
                     pass
-     return jsonify(entries)
+                return jsonify(entries)
+
 # ========== MCP Server ==========
 import asyncio
 import uvicorn
