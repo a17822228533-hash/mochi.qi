@@ -3,15 +3,15 @@ from flask_cors import CORS
 import copy
 import json, os, time, random, string, hashlib, sqlite3
 from datetime import datetime, timezone, timedelta as _td
+app = Flask(__name__)
+CORS(app)
+
+DATA_DIR = '/root/mochi'
 # 初始化数据库
 DB_PATH = DATA_DIR + '/mochi.db'
 if not os.path.exists(DB_PATH):
     import init_db
     print("数据库初始化完成", flush=True)
-app = Flask(__name__)
-CORS(app)
-
-DATA_DIR = '/root/mochi'
 STATES_DIR = DATA_DIR + '/states'
 DB_PATH = DATA_DIR + '/mochi.db'
 SCHOOL_LOG = DATA_DIR + '/school_log.jsonl'
