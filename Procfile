@@ -1,2 +1,1 @@
-web: python app.py
-mcp: python mcp_server.py
+web: python app.py & python mcp_server.py
