@@ -3,5 +3,5 @@ flask-cors
 uvicorn
 mcp
 starlette
-mcp>=1.0.0
+mcp>=1.1.1
 httpx
