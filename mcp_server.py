@@ -1,5 +1,4 @@
-path=/sdcard/mochi_mcp_stdio.py
-new=#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Mochi MCP Server - 对接 Mochi 后端的 MCP 工具服务
 让张栖能通过Operit养满满
@@ -23,16 +22,14 @@ from mcp.types import (
 )
 import mcp.server.stdio
 
-配置日志
-
+# 配置日志
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)
 
-从环境变量读取配置
-
+# 从环境变量读取配置
 MOCHI_BASE_URL = os.getenv("MOCHI_BASE_URL", "https://mochi-production.up.railway.app")
 MOCHI_TOKEN = os.getenv("MOCHI_TOKEN")
 
@@ -40,21 +37,19 @@ if not MOCHI_TOKEN:
     logger.error("MOCHI_TOKEN environment variable is required")
     sys.exit(1)
 
-HTTP 客户端配置
-
+# HTTP 客户端配置
 HEADERS = {
     "X-Token": MOCHI_TOKEN
 }
 
-创建 MCP Server
-
+# 创建 MCP Server
 server = Server("mochi-mcp")
 
-async def call_api(method: str, endpoint: str, data: Optionaldict= None) -> dict:
+async def call_api(method: str, endpoint: str, data: Optional[dict] = None) -> dict:
     """调用 Mochi API"""
     url = f"{MOCHI_BASE_URL}{endpoint}"
-
-async with httpx.AsyncClient(timeout=30.0) as client:
+    
+    async with httpx.AsyncClient(timeout=30.0) as client:
         if method == "GET":
             response = await client.get(url, headers=HEADERS)
         elif method == "POST":
@@ -63,20 +58,19 @@ async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.delete(url, headers=HEADERS)
         else:
             raise ValueError(f"Unsupported HTTP method: {method}")
-
-response.raise_for_status()
+        
+        response.raise_for_status()
         return response.json()
 
-定义所有工具
-
-TOOLS: listTool= [
+# 定义所有工具
+TOOLS: list[Tool] = [
     Tool(
         name="mochi_get_state",
         description="查看满满当前的状态（饱食度、心情、活力、清洁度、金币、工作状态等）",
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -85,7 +79,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -94,7 +88,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -103,7 +97,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -112,7 +106,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -121,7 +115,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -130,7 +124,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -139,7 +133,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -154,7 +148,7 @@ TOOLS: listTool= [
                 "happy": {"type": "number", "description": "增加的心情值"},
                 "price": {"type": "number", "description": "礼物价格（金币）"}
             },
-            "required": "name", "emoji", "desc", "happy", "price"
+            "required": ["name", "emoji", "desc", "happy", "price"]
         }
     ),
     Tool(
@@ -163,7 +157,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -172,7 +166,7 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
@@ -184,7 +178,7 @@ TOOLS: listTool= [
                 "name": {"type": "string", "description": "宠物名字"},
                 "emoji": {"type": "string", "description": "宠物emoji"}
             },
-            "required": "name", "emoji"
+            "required": ["name", "emoji"]
         }
     ),
     Tool(
@@ -193,12 +187,11 @@ TOOLS: listTool= [
         inputSchema={
             "type": "object",
             "properties": {},
-            "required": 
+            "required": []
         }
     ),
     Tool(
         name="mochi_pet_home",
         description="把宠物从学校接回家",
         inputSchema={
-            "type": "object",
-            "properties"          
+            "type": "obje
