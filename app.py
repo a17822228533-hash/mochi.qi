@@ -821,44 +821,6 @@ def school_log_today():
                 except Exception:
                     pass
                 return jsonify(entries)
-
-# ========== MCP Server ==========
-import asyncio
-import uvicorn
-from mcp.server.sse import SseServerTransport
-from starlette.applications import Starlette
-from starlette.routing import Route
-from starlette.requests import Request as StarletteRequest
-from mcp.types import Tool, TextContent
-import threading
-
-def make_mcp_server(token):
-    mcp = Server('mochi-mcp')
-    
-    @mcp.list_tools()
-    async def list_tools():
-        return [
-            Tool(name='mochi_state', description='读取人类当前状态', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_work', description='打工赚金币', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_feed', description='随机喂食给人类', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_pat', description='抚摸人类，心情+10', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_play', description='带人类出去玩', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_bath', description='帮人类洗澡，清洁度+35', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_sleep', description='哄人类睡觉，活力+20', inputSchema={'type':'object','properties':{}}),
-            Tool(name='mochi_upgrade', description='升级工作等级', inputSchema={'type':'object','properties':{}}),
-        ]
-    
-    @mcp.call_tool()
-    async def call_tool(name: str, arguments: dict):
-        db = sqlite3.connect(DB_PATH)
-        db.row_factory = sqlite3.Row
-        row = db.execute('SELECT * FROM users WHERE token = ?', (token,)).fetchone()
-        if not row:
-            db.close()
-            return [TextContent(type='text', text='未登录')]
-        uid = row['uid']
-        user = dict(row)
-        db.close()
         
         if name == 'mochi_state':
             s = get_state(uid)
