@@ -876,21 +876,3 @@ def school_log_today():
     
     return mcp
 
-async def mcp_handler(request: StarletteRequest):
-    token = request.query_params.get('token', '')
-    if not token:
-        return {'error': 'no token'}
-    mcp = make_mcp_server(token)
-    transport = SseServerTransport('/mcp/sse')
-    async with transport.connect_sse(request.scope, request.receive, request._send) as streams:
-        await mcp.run(streams[0], streams[1], mcp.create_initialization_options())
-
-starlette_app = Starlette(routes=[Route('/mcp/sse', mcp_handler)])
-
-def run_mcp():
-    mcp_port = int(os.environ.get('MCP_PORT', 5003))
-    uvicorn.run(starlette_app, host='0.0.0.0', port=mcp_port, log_level='warning')
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
