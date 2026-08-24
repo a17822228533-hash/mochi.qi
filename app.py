@@ -825,7 +825,6 @@ def school_log_today():
 # ========== MCP Server ==========
 import asyncio
 import uvicorn
-from mcp.server import Server
 from mcp.server.sse import SseServerTransport
 from starlette.applications import Starlette
 from starlette.routing import Route
