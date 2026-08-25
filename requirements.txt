@@ -1,5 +1,6 @@
-flask==3.0.0
-flask-cors==4.0.0
-httpx==0.27.0
-uvicorn==0.30.1
-mcp==1.1.0
+flask
+flask-cors
+httpx
+starlette
+uvicorn
+mcp
