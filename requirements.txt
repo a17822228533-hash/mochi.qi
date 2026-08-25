@@ -1,6 +1,6 @@
 flask
 flask-cors
 httpx
-starlette
+mcp>=1.8,<2
+starlette>=1.0
 uvicorn
-mcp
