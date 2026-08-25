@@ -216,7 +216,7 @@ async def handle_sse(request: Request):
 return Response()
 async def handle_messages(request: Request):
     await sse.handle_post_message(request.scope, request.receive, request._send)
-
+return Response()
 starlette_app = Starlette(routes=[
     Route('/sse', endpoint=handle_sse),
     Route('/messages', endpoint=handle_messages, methods=['POST']),
