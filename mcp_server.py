@@ -1,3 +1,4 @@
+from starlette.responses import Response
 import asyncio, json, os
 from mcp.server import Server
 from mcp.server.sse import SseServerTransport
@@ -212,7 +213,7 @@ async def handle_sse(request: Request):
     app = make_server(token)
     async with sse.connect_sse(request.scope, request.receive, request._send) as streams:
         await app.run(streams[0], streams[1], app.create_initialization_options())
-
+return Response()
 async def handle_messages(request: Request):
     await sse.handle_post_message(request.scope, request.receive, request._send)
 
