@@ -2,9 +2,6 @@ services:
   - type: web
     name: mochi-mcp-server
     runtime: python
-    plan: free
+    pythonVersion: "3.11.9"
     buildCommand: pip install -r requirements.txt
     startCommand: python mochi_mcp_server_backup.py
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
