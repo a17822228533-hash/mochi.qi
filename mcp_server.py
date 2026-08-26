@@ -91,8 +91,8 @@ async def handle_list_tools():
 
 async def handle_call_tool(ctx, params):
     token = CURRENT_TOKEN
-    name = params.name
-    arguments = params.arguments or {}
+    name = params['name']
+arguments = params.get('arguments', {})
     try:
         if name == 'mochi_state':
             s = await call_api('/state', token=token)
