@@ -211,11 +211,11 @@ async def handle_sse(request: Request):
     token = request.query_params.get('token', os.getenv('MOCHI_TOKEN', ''))
     CURRENT_TOKEN = token
     app = make_server(token)
-    async with sse.connect_sse(request.scope, request.receive, request.send) as streams:
+    async with sse.connect_sse(request.scope, request.receive, request._send) as streams:
         await app.run(streams[0], streams[1], app.create_initialization_options())
     return Response()
 async def handle_messages(request: Request):
-    await sse.handle_post_message(request.scope, request.receive, request.send)
+    await sse.handle_post_message(request.scope, request.receive, request._send)
 
 starlette_app = Starlette(routes=[
     Route('/sse', endpoint=handle_sse),
